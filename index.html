@@ -1,0 +1,2400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ur ai slop amuseme — Artisanal Intelligence</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Fredoka, Space Mono, Rubik -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Rubik:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --maple-light: #f7e6c4;
+      --maple-base: #f3dfb9;
+      --maple-dark: #c9a66b;
+      --oak-base: #d9a76a;
+      --oak-dark: #9c6b34;
+      --walnut-base: #6e472b;
+      --walnut-dark: #3a2212;
+      --umber-deep: #26150a;
+      --felt-green: #2b4c3f;
+      --felt-dark: #1b3329;
+      --brass: #e2b857;
+      --brass-dark: #9c7623;
+    }
+
+    * {
+      box-sizing: border-box;
+      user-select: none;
+    }
+
+    textarea, input, .selectable-text {
+      user-select: text;
+    }
+
+    body {
+      font-family: 'Rubik', sans-serif;
+      background-color: var(--felt-green);
+      /* Tactile baize felt table texture with warm spotlight vignette */
+      background-image:
+        radial-gradient(circle at 50% 25%, rgba(255, 240, 200, 0.12) 0%, rgba(15, 32, 25, 0.65) 100%),
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 2px, transparent 2px, transparent 4px),
+        repeating-linear-gradient(-45deg, rgba(0,0,0,0.04) 0px, rgba(0,0,0,0.04) 2px, transparent 2px, transparent 4px);
+      color: var(--walnut-dark);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, .font-block {
+      font-family: 'Fredoka', sans-serif;
+    }
+
+    .font-mono-wood {
+      font-family: 'Space Mono', monospace;
+    }
+
+    /* Wood Grain Surface Styles */
+    .wood-maple {
+      background-color: var(--maple-base);
+      background-image:
+        repeating-linear-gradient(
+          90deg,
+          rgba(180, 125, 65, 0.06) 0px,
+          rgba(180, 125, 65, 0.06) 12px,
+          transparent 12px,
+          transparent 28px
+        ),
+        linear-gradient(180deg, #f9ebd0 0%, #eed3a3 100%);
+      border: 3px solid #7d4e27;
+      border-bottom: 8px solid #593518;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35), inset 0 2px 0 rgba(255, 255, 255, 0.65);
+      border-radius: 16px;
+      position: relative;
+    }
+
+    .wood-oak {
+      background-color: var(--oak-base);
+      background-image:
+        repeating-linear-gradient(
+          90deg,
+          rgba(90, 50, 20, 0.08) 0px,
+          rgba(90, 50, 20, 0.08) 16px,
+          transparent 16px,
+          transparent 34px
+        ),
+        linear-gradient(180deg, #e4b77d 0%, #cf9654 100%);
+      border: 3px solid #5e3819;
+      border-bottom: 8px solid #3f240e;
+      box-shadow: 0 10px 18px rgba(0, 0, 0, 0.38), inset 0 2px 0 rgba(255, 240, 215, 0.45);
+      border-radius: 16px;
+      position: relative;
+    }
+
+    .wood-walnut {
+      background-color: var(--walnut-base);
+      background-image:
+        repeating-linear-gradient(
+          90deg,
+          rgba(25, 10, 0, 0.14) 0px,
+          rgba(25, 10, 0, 0.14) 14px,
+          transparent 14px,
+          transparent 30px
+        ),
+        linear-gradient(180deg, #7c5233 0%, #5c3a21 100%);
+      border: 3px solid #2d190b;
+      border-bottom: 8px solid #1e1006;
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.45), inset 0 2px 0 rgba(255, 220, 180, 0.22);
+      color: #f9ebd0;
+      border-radius: 16px;
+      position: relative;
+    }
+
+    /* Recessed Carved Wood Well (for inputs, queues, canvas frame) */
+    .wood-carved-well {
+      background-color: #dec092;
+      background-image:
+        linear-gradient(180deg, rgba(60, 32, 10, 0.18) 0%, rgba(255, 245, 225, 0.15) 100%);
+      border: 3px solid #6e4423;
+      box-shadow: inset 0 5px 10px rgba(45, 22, 5, 0.35), 0 2px 0 rgba(255, 255, 255, 0.5);
+      border-radius: 12px;
+    }
+
+    .wood-terminal-well {
+      background-color: #29180c;
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          rgba(255, 195, 110, 0.03) 0px,
+          rgba(255, 195, 110, 0.03) 2px,
+          transparent 2px,
+          transparent 4px
+        );
+      border: 3px solid #160c05;
+      box-shadow: inset 0 6px 14px rgba(0, 0, 0, 0.7), 0 2px 0 rgba(255, 230, 190, 0.3);
+      color: #ffcf7c;
+      border-radius: 12px;
+    }
+
+    /* Interactive 3D Toy Wooden Buttons */
+    .btn-wood {
+      transition: transform 0.08s cubic-bezier(0.34, 1.56, 0.64, 1), border-bottom-width 0.08s ease, filter 0.15s ease;
+      border: 3px solid #4a2c16;
+      border-bottom: 6px solid #3a2212;
+      border-radius: 12px;
+      font-family: 'Fredoka', sans-serif;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.28), inset 0 2px 0 rgba(255, 255, 255, 0.45);
+    }
+
+    .btn-wood:hover:not(:disabled) {
+      filter: brightness(1.05);
+      transform: translateY(-1px);
+    }
+
+    .btn-wood:active:not(:disabled) {
+      transform: translateY(4px);
+      border-bottom-width: 2px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-wood:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      filter: grayscale(0.35);
+    }
+
+    /* Painted Toy Block Variants */
+    .btn-wood-maple {
+      background: linear-gradient(180deg, #fae8c8 0%, #e4c38f 100%);
+      color: #3a2212;
+      border-color: #6b4222;
+      border-bottom-color: #4a2c16;
+    }
+
+    .btn-wood-amber {
+      background: linear-gradient(180deg, #f6b954 0%, #df8b24 100%);
+      color: #2d1808;
+      border-color: #693908;
+      border-bottom-color: #462403;
+    }
+
+    .btn-wood-crimson {
+      background: linear-gradient(180deg, #e05a47 0%, #b83726 100%);
+      color: #fff6e8;
+      border-color: #5e1910;
+      border-bottom-color: #3f0e08;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    }
+
+    .btn-wood-emerald {
+      background: linear-gradient(180deg, #52b788 0%, #2d8a5e 100%);
+      color: #fff9ed;
+      border-color: #174931;
+      border-bottom-color: #0e3120;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    }
+
+    .btn-wood-royal {
+      background: linear-gradient(180deg, #5c95e0 0%, #366bb5 100%);
+      color: #fff9ed;
+      border-color: #1c3b68;
+      border-bottom-color: #102544;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    }
+
+    .btn-wood-walnut {
+      background: linear-gradient(180deg, #7a4f30 0%, #56351d 100%);
+      color: #f9ebd0;
+      border-color: #331d0d;
+      border-bottom-color: #1f1006;
+    }
+
+    /* Toy Block Letter Tiles in Header */
+    .toy-tile {
+      width: 38px;
+      height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      font-size: 1.35rem;
+      border-radius: 9px;
+      border: 2.5px solid #4a2c16;
+      border-bottom: 6px solid #351d0d;
+      box-shadow: 0 4px 7px rgba(0,0,0,0.35), inset 0 2px 0 rgba(255,255,255,0.6);
+      transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .toy-tile::after {
+      content: '';
+      position: absolute;
+      inset: 3px;
+      border: 1.5px dashed rgba(74, 44, 22, 0.28);
+      border-radius: 5px;
+      pointer-events: none;
+    }
+
+    .toy-tile:hover {
+      transform: translateY(-5px) rotate(0deg) !important;
+    }
+
+    .toy-tile:active {
+      transform: translateY(3px) !important;
+      border-bottom-width: 2px;
+    }
+
+    /* Corner Brass Screws / Wooden Dowels */
+    .dowel-corner {
+      width: 11px;
+      height: 11px;
+      border-radius: 9999px;
+      background: radial-gradient(circle at 35% 35%, #f5d680 0%, #b5892e 70%, #6b4e12 100%);
+      border: 1.5px solid #4a3208;
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.7), 0 1px 2px rgba(0,0,0,0.4);
+      position: absolute;
+      pointer-events: none;
+      z-index: 5;
+    }
+    .dowel-corner::after {
+      content: '';
+      position: absolute;
+      top: 4px;
+      left: 1.5px;
+      right: 1.5px;
+      height: 1.5px;
+      background: rgba(58, 34, 18, 0.65);
+      transform: rotate(35deg);
+    }
+
+    /* Pyrography / Wood-Burned Text Effect */
+    .pyro-text {
+      color: #3a2212;
+      text-shadow: 0 1px 0 rgba(255, 245, 220, 0.7), 0 -1px 1px rgba(40, 20, 5, 0.25);
+    }
+
+    /* Rattling Urgent Timer Animation */
+    @keyframes woodRattle {
+      0%, 100% { transform: rotate(0deg) translateX(0); }
+      25% { transform: rotate(-1.2deg) translateX(-2px); }
+      75% { transform: rotate(1.2deg) translateX(2px); }
+    }
+
+    .rattle-urgent {
+      animation: woodRattle 0.18s infinite;
+    }
+
+    /* Tab Active State */
+    .tab-block-active {
+      transform: translateY(3px);
+      border-bottom-width: 3px !important;
+      box-shadow: inset 0 3px 6px rgba(0,0,0,0.25), 0 2px 4px rgba(0,0,0,0.2) !important;
+    }
+
+    /* Custom Scrollbar for Wooden Wells */
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #223d32;
+      border-radius: 6px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #b88244;
+      border: 2px solid #3a2212;
+      border-radius: 6px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #d9a76a;
+    }
+
+    @media (max-width: 640px) {
+      .toy-tile {
+        width: 28px;
+        height: 32px;
+        font-size: 1rem;
+        border-bottom-width: 4px;
+      }
+    }
+  </style>
+</head>
+<body class="pb-16">
+
+  <!-- TOP WOODEN BEAM BAR -->
+  <header class="w-full bg-[#4a2c16] border-b-8 border-[#2b180a] shadow-2xl sticky top-0 z-40 px-3 py-2.5">
+    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      
+      <!-- Left: Firebase Live Status & Call-Sign -->
+      <div class="flex flex-wrap items-center gap-2">
+        <!-- Connection Badge -->
+        <button id="btnDbStatus" class="btn-wood btn-wood-walnut px-3 py-1.5 text-xs sm:text-sm" title="Click for Firebase RTDB & GitHub Deploy Info">
+          <span id="dbStatusDot" class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse inline-block"></span>
+          <span id="dbStatusText" class="font-mono-wood">Connecting RTDB...</span>
+        </button>
+
+        <!-- Artisan Call-Sign Badge -->
+        <div class="wood-oak px-3 py-1 flex items-center gap-1.5 !border-b-4 !rounded-xl text-xs sm:text-sm">
+          <span class="font-bold text-[#3a2212]">🤖 Unit:</span>
+          <input
+            id="artisanNameInput"
+            type="text"
+            maxlength="18"
+            class="bg-[#f7e6c4] border-2 border-[#5e3819] rounded-lg px-2 py-0.5 font-mono-wood font-bold text-[#2d1808] w-28 sm:w-36 focus:outline-none focus:ring-2 focus:ring-amber-600"
+            title="Edit your Artisan AI Call-Sign"
+          />
+        </div>
+      </div>
+
+      <!-- Right: Wooden Token Economy & Controls -->
+      <div class="flex flex-wrap items-center gap-2">
+        <!-- Wooden Token Counter -->
+        <div class="wood-maple px-3.5 py-1.5 !border-b-4 !rounded-xl flex items-center gap-2.5">
+          <div class="flex items-center gap-1">
+            <span class="text-lg">🪵</span>
+            <span class="font-block font-bold text-base sm:text-lg text-[#3a2212]" id="tokenCountDisplay">2</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-[#6e472b]">Tokens</span>
+          </div>
+          <div class="h-4 w-[2px] bg-[#b88244]"></div>
+          <div class="text-[11px] font-mono-wood text-[#593518] flex items-center gap-1" title="Passive regeneration grants +2 Wooden Tokens every 10 minutes, or answer a prompt in BE THE AI mode to earn immediately!">
+            <span>⏳</span>
+            <span id="regenTimerText">Full</span>
+          </div>
+        </div>
+
+        <!-- Sound Effect Toggle -->
+        <button id="btnToggleSound" class="btn-wood btn-wood-maple px-2.5 py-1.5 text-sm" title="Toggle Wooden Block Clack Sound Effects">
+          <span id="soundIcon">🔊</span>
+        </button>
+
+        <!-- GitHub Repo & Setup Modal Trigger -->
+        <button id="btnOpenDeployModal" class="btn-wood btn-wood-amber px-3 py-1.5 text-xs sm:text-sm">
+          <span>📦 GitHub & DB Info</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN TABLE CONTAINER -->
+  <main class="max-w-6xl mx-auto px-3 sm:px-6 pt-5">
+
+    <!-- HERO TOY BLOCK LOGO BANNER -->
+    <section class="wood-oak p-4 sm:p-6 mb-6 text-center">
+      <span class="dowel-corner top-2.5 left-2.5"></span>
+      <span class="dowel-corner top-2.5 right-2.5"></span>
+      <span class="dowel-corner bottom-2.5 left-2.5"></span>
+      <span class="dowel-corner bottom-2.5 right-2.5"></span>
+
+      <!-- Toy Letter Tiles: [U][R] [A][I] [S][L][O][P] [A][M][U][S][E][M][E] -->
+      <div id="toyLogoContainer" class="flex flex-wrap items-center justify-center gap-y-2 gap-x-1 sm:gap-x-1.5 mb-3">
+        <!-- Populated dynamically with interactive clacking toy blocks -->
+      </div>
+
+      <p class="pyro-text font-medium text-sm sm:text-base max-w-2xl mx-auto">
+        <strong>100% Certified Organic Artisanal Intelligence.</strong> Zero GPUs. Zero Silicon.
+        Spend a 🪵 <strong>Wooden Token</strong> to demand Text Slop or a Woodblock Sketch—or <strong>LARP as the AI</strong> under a ticking clock to amuse fellow humans and earn tokens!
+      </p>
+    </section>
+
+    <!-- NAVIGATION TABS (3 BIG WOODEN BLOCKS) -->
+    <nav class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6">
+      <button
+        id="tabBtnAsk"
+        onclick="switchTab('ask')"
+        class="btn-wood btn-wood-maple py-3.5 px-4 text-base sm:text-lg font-bold tab-block-active"
+      >
+        <span class="text-2xl">🗣️</span>
+        <div class="text-left leading-tight">
+          <div>1. ASK THE "AI"</div>
+          <div class="text-xs font-normal opacity-80">Spend 🪵 Token • Demand Slop</div>
+        </div>
+      </button>
+
+      <button
+        id="tabBtnLarp"
+        onclick="switchTab('larp')"
+        class="btn-wood btn-wood-amber py-3.5 px-4 text-base sm:text-lg font-bold"
+      >
+        <span class="text-2xl">🔨</span>
+        <div class="text-left leading-tight flex-1">
+          <div class="flex items-center justify-between">
+            <span>2. BE THE AI (LARP)</span>
+            <span id="queueBadgeCount" class="bg-[#3a2212] text-[#f7e6c4] text-xs font-mono-wood px-2 py-0.5 rounded-full">0</span>
+          </div>
+          <div class="text-xs font-normal opacity-85">Beat the Clock • Earn +1/+2 🪵</div>
+        </div>
+      </button>
+
+      <button
+        id="tabBtnGallery"
+        onclick="switchTab('gallery')"
+        class="btn-wood btn-wood-emerald py-3.5 px-4 text-base sm:text-lg font-bold"
+      >
+        <span class="text-2xl">🏛️</span>
+        <div class="text-left leading-tight flex-1">
+          <div class="flex items-center justify-between">
+            <span>3. AMUSEMENT GALLERY</span>
+            <span id="galleryBadgeCount" class="bg-[#0e3120] text-[#fff9ed] text-xs font-mono-wood px-2 py-0.5 rounded-full">0</span>
+          </div>
+          <div class="text-xs font-normal opacity-90">Live Feed • Vote "Amuse Me!"</div>
+        </div>
+      </button>
+    </nav>
+
+    <!-- ==========================================
+         TAB 1: ASK THE AI (SUBMIT PROMPT)
+         ========================================== -->
+    <section id="tabPanelAsk" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      
+      <!-- Left 7 Cols: Prompt Carving Bench -->
+      <div class="lg:col-span-7 wood-maple p-5 sm:p-6">
+        <span class="dowel-corner top-2.5 left-2.5"></span>
+        <span class="dowel-corner top-2.5 right-2.5"></span>
+        <span class="dowel-corner bottom-2.5 left-2.5"></span>
+        <span class="dowel-corner bottom-2.5 right-2.5"></span>
+
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+          <div>
+            <h2 class="text-xl sm:text-2xl font-bold pyro-text flex items-center gap-2">
+              <span>🪵 Carve a Prompt for the "AI"</span>
+            </h2>
+            <p class="text-xs sm:text-sm text-[#5c3a21]">A real human pretending to be an AI will have seconds to craft your response.</p>
+          </div>
+          <button
+            id="btnRandomPromptIdea"
+            type="button"
+            class="btn-wood btn-wood-oak wood-oak !border-b-4 px-3 py-1.5 text-xs font-bold text-[#3a2212]"
+          >
+            🎲 Random Idea
+          </button>
+        </div>
+
+        <!-- Prompt Textarea -->
+        <div class="wood-carved-well p-3 mb-4">
+          <label for="promptInput" class="block text-xs font-mono-wood uppercase tracking-wider text-[#593518] font-bold mb-1">
+            Prompt Inscription (Max 240 chars):
+          </label>
+          <textarea
+            id="promptInput"
+            rows="3"
+            maxlength="240"
+            placeholder="e.g., Explain why my toaster is unionizing in the style of a medieval peasant, or Draw a raccoon CEO firing a pigeon..."
+            class="w-full bg-transparent text-[#2d1808] placeholder-[#8c6239] font-medium text-base sm:text-lg focus:outline-none resize-none"
+          ></textarea>
+          <div class="flex justify-between items-center text-xs font-mono-wood text-[#6e472b] mt-1 pt-1 border-t border-[#bfa074]">
+            <span>Be weird, specific, or philosophical!</span>
+            <span id="promptCharCount">0 / 240</span>
+          </div>
+        </div>
+
+        <!-- Step 2: Output Type Selector (Text Slop vs Woodblock Sketch) -->
+        <div class="mb-4">
+          <label class="block text-xs font-mono-wood uppercase tracking-wider text-[#593518] font-bold mb-2">
+            Select Output Modality:
+          </label>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <button
+              type="button"
+              id="modeBtnText"
+              onclick="selectPromptMode('text')"
+              class="btn-wood btn-wood-amber py-3 px-4 text-left flex items-center gap-3 ring-4 ring-[#3a2212]"
+            >
+              <span class="text-3xl">💬</span>
+              <div>
+                <div class="font-bold text-base">Text Slop Response</div>
+                <div class="text-xs opacity-85 font-sans">Robotic corporate essays, advice & poetry</div>
+              </div>
+            </button>
+
+            <button
+              type="button"
+              id="modeBtnSketch"
+              onclick="selectPromptMode('sketch')"
+              class="btn-wood btn-wood-maple py-3 px-4 text-left flex items-center gap-3"
+            >
+              <span class="text-3xl">🎨</span>
+              <div>
+                <div class="font-bold text-base">Woodblock Sketch</div>
+                <div class="text-xs opacity-80 font-sans">Hand-drawn masterpiece on a wooden slate</div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 3: Deep Grain Thinking Mode Toggle -->
+        <div class="wood-oak p-3.5 !border-b-4 !rounded-xl mb-5 flex flex-wrap items-center justify-between gap-3">
+          <div class="flex items-start gap-2.5">
+            <input
+              id="thinkingModeToggle"
+              type="checkbox"
+              onchange="updatePromptCostUI()"
+              class="mt-1 w-5 h-5 accent-[#3a2212] rounded cursor-pointer"
+            />
+            <label for="thinkingModeToggle" class="cursor-pointer">
+              <div class="font-block font-bold text-sm sm:text-base text-[#2d1808] flex items-center gap-1.5">
+                <span>🧠 Deep Grain "Thinking Mode"</span>
+                <span class="bg-[#3a2212] text-[#f7e6c4] text-[11px] font-mono-wood px-2 py-0.5 rounded">150s Timer</span>
+              </div>
+              <div class="text-xs text-[#4a2c16]">
+                Gives the human LARPer double the time (150s vs 75s) for extra-detailed slop or intricate art. Costs <strong>2 🪵 Tokens</strong>.
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Submit Button & Token Status -->
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+          <div class="text-xs sm:text-sm font-mono-wood text-[#4a2c16]">
+            Cost: <strong id="submitCostLabel" class="text-base text-[#2d1808]">1 🪵 Wooden Token</strong>
+          </div>
+          <button
+            id="btnSubmitPrompt"
+            type="button"
+            onclick="submitHumanPrompt()"
+            class="btn-wood btn-wood-crimson py-3.5 px-6 text-base sm:text-lg font-bold"
+          >
+            <span>🚀 Dispatch Block to Queue</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Right 5 Cols: My Submitted Blocks Live Tray -->
+      <div class="lg:col-span-5 wood-walnut p-5 sm:p-6 flex flex-col">
+        <span class="dowel-corner top-2.5 left-2.5"></span>
+        <span class="dowel-corner top-2.5 right-2.5"></span>
+        <span class="dowel-corner bottom-2.5 left-2.5"></span>
+        <span class="dowel-corner bottom-2.5 right-2.5"></span>
+
+        <div class="flex items-center justify-between mb-3">
+          <div>
+            <h3 class="text-lg sm:text-xl font-bold text-[#f7e6c4] flex items-center gap-2">
+              <span>📥 My Submitted Blocks</span>
+            </h3>
+            <p class="text-xs text-[#dec092]">Updates live in real time as humans claim & carve your prompts</p>
+          </div>
+          <span id="myPromptsCountBadge" class="bg-[#2d190b] text-[#f6b954] font-mono-wood text-xs px-2.5 py-1 rounded-lg border border-[#8c6239]">0</span>
+        </div>
+
+        <div id="mySubmittedTray" class="flex-1 space-y-3 max-h-[460px] overflow-y-auto pr-1">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ==========================================
+         TAB 2: BE THE AI (LARP MODE)
+         ========================================== -->
+    <section id="tabPanelLarp" class="hidden">
+      
+      <!-- VIEW A: THE UNANSWERED QUEUE -->
+      <div id="larpQueueView" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Queue List (8 cols) -->
+        <div class="lg:col-span-8 wood-maple p-5 sm:p-6">
+          <span class="dowel-corner top-2.5 left-2.5"></span>
+          <span class="dowel-corner top-2.5 right-2.5"></span>
+          <span class="dowel-corner bottom-2.5 left-2.5"></span>
+          <span class="dowel-corner bottom-2.5 right-2.5"></span>
+
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+            <div>
+              <h2 class="text-xl sm:text-2xl font-bold pyro-text flex items-center gap-2">
+                <span>🔨 Incoming Human Prompts Queue</span>
+              </h2>
+              <p class="text-xs sm:text-sm text-[#5c3a21]">
+                Claim a block below and pretend to be an enthusiastic, slightly unhinged AI model before the timer runs out!
+              </p>
+            </div>
+
+            <div class="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onclick="spawnPracticePrompt('text')"
+                class="btn-wood btn-wood-amber px-3 py-2 text-xs sm:text-sm font-bold"
+              >
+                🎲 +Practice Text Prompt
+              </button>
+              <button
+                type="button"
+                onclick="spawnPracticePrompt('sketch')"
+                class="btn-wood btn-wood-royal px-3 py-2 text-xs sm:text-sm font-bold"
+              >
+                🎨 +Practice Sketch Prompt
+              </button>
+            </div>
+          </div>
+
+          <!-- Live Queue Container -->
+          <div id="pendingQueueContainer" class="space-y-3 min-h-[240px]">
+            <!-- Populated via Firebase RTDB listener -->
+          </div>
+        </div>
+
+        <!-- Right 4 Cols: Artisan LARP Field Manual & Stats -->
+        <div class="lg:col-span-4 space-y-5">
+          <div class="wood-oak p-5">
+            <span class="dowel-corner top-2.5 left-2.5"></span>
+            <span class="dowel-corner top-2.5 right-2.5"></span>
+            <h3 class="text-lg font-bold pyro-text mb-2">📜 Rules of Artisanal AI LARPing</h3>
+            <ul class="text-xs sm:text-sm text-[#3a2212] space-y-2">
+              <li class="flex items-start gap-2">
+                <span>1️⃣</span>
+                <span><strong>Never break character:</strong> Over-use words like <em>"Certainly!"</em>, <em>"Tapestry"</em>, <em>"Delve"</em>, and <em>"As a wooden block model..."</em></span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span>2️⃣</span>
+                <span><strong>Beat the Clock:</strong> Standard blocks give you <strong>75 seconds</strong> (+1 🪵 Token). Deep Grain Thinking blocks give you <strong>150 seconds</strong> (+2 🪵 Tokens).</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span>3️⃣</span>
+                <span><strong>Hallucinate Boldly:</strong> Make up fake wooden historical facts, overly confident diagrams, or absurd bullet points!</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="wood-walnut p-5">
+            <span class="dowel-corner top-2.5 left-2.5"></span>
+            <span class="dowel-corner top-2.5 right-2.5"></span>
+            <h3 class="text-lg font-bold text-[#f7e6c4] mb-3 flex items-center gap-2">
+              <span>🏆 Top Artisanal Units</span>
+            </h3>
+            <div id="leaderboardList" class="space-y-2 text-xs sm:text-sm">
+              <!-- Populated dynamically -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- VIEW B: ACTIVE WORKBENCH (WHEN A PROMPT IS CLAIMED) -->
+      <div id="larpActiveWorkbench" class="hidden wood-maple p-4 sm:p-6">
+        <span class="dowel-corner top-2.5 left-2.5"></span>
+        <span class="dowel-corner top-2.5 right-2.5"></span>
+        <span class="dowel-corner bottom-2.5 left-2.5"></span>
+        <span class="dowel-corner bottom-2.5 right-2.5"></span>
+
+        <!-- Top Countdown Bar -->
+        <div id="workbenchTimerBox" class="wood-walnut p-3.5 sm:p-4 mb-5 !border-b-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+            <div class="flex items-center gap-2">
+              <span class="bg-amber-400 text-[#2d1808] font-mono-wood font-bold text-xs px-2.5 py-0.5 rounded uppercase" id="activePromptTypeTag">
+                💬 TEXT SLOP MODE
+              </span>
+              <span class="text-xs sm:text-sm font-mono-wood text-[#f7e6c4]" id="activePromptRewardTag">
+                Reward: +1 🪵 Token
+              </span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="font-mono-wood font-bold text-xl sm:text-2xl text-amber-300" id="activeCountdownText">
+                01:15
+              </div>
+              <button
+                type="button"
+                onclick="abandonActiveClaim()"
+                class="btn-wood btn-wood-crimson px-3 py-1 text-xs"
+              >
+                ✖ Release Block
+              </button>
+            </div>
+          </div>
+          <!-- Progress Bar Track -->
+          <div class="w-full h-4 bg-[#1e1006] rounded-full overflow-hidden border border-[#5c3a21]">
+            <div
+              id="activeTimerBar"
+              class="h-full bg-gradient-to-r from-emerald-400 via-amber-400 to-rose-500 transition-all duration-300"
+              style="width: 100%;"
+            ></div>
+          </div>
+        </div>
+
+        <!-- The Human's Prompt Card -->
+        <div class="wood-oak p-4 mb-5 !border-b-4">
+          <div class="text-xs font-mono-wood uppercase text-[#4a2c16] font-bold mb-1 flex items-center justify-between">
+            <span id="activePromptAuthorLabel">HUMAN USER ASKED:</span>
+            <span id="activeThinkingBadge" class="hidden bg-[#3a2212] text-amber-300 px-2 py-0.5 rounded text-[11px]">🧠 DEEP GRAIN THINKING (2x)</span>
+          </div>
+          <p id="activePromptDisplay" class="font-block font-bold text-lg sm:text-2xl text-[#26150a] selectable-text">
+            "Loading prompt..."
+          </p>
+        </div>
+
+        <!-- WORKSPACE 1: TEXT SLOP TERMINAL -->
+        <div id="textSlopWorkspace" class="hidden">
+          <!-- Slop Stamp Macros -->
+          <div class="mb-3">
+            <div class="text-xs font-mono-wood font-bold uppercase text-[#593518] mb-1.5 flex items-center justify-between">
+              <span>🖨️ Instant AI Slop Stamp Macros (Click to insert):</span>
+              <span id="slopMeterBadge" class="bg-[#3a2212] text-amber-300 px-2.5 py-0.5 rounded font-mono-wood text-xs">
+                🤖 Slop Purity: 12%
+              </span>
+            </div>
+            <div class="flex flex-wrap gap-1.5" id="slopMacrosContainer">
+              <!-- Populated with clickable wooden macro stamps -->
+            </div>
+          </div>
+
+          <!-- Pyrography Terminal Textarea -->
+          <div class="wood-terminal-well p-4 mb-4">
+            <div class="flex items-center justify-between text-xs font-mono-wood text-amber-400/70 pb-2 mb-2 border-b border-amber-900/50">
+              <span>ARTISAN-LLM-TERMINAL v4.2 // GENERATING RESPONSE...</span>
+              <span id="larpTextCharCount">0 chars</span>
+            </div>
+            <textarea
+              id="larpTextInput"
+              rows="6"
+              placeholder="Type your most convincingly robotic, overly helpful, or gloriously hallucinated AI response here..."
+              class="w-full bg-transparent text-amber-200 placeholder-amber-700/70 font-mono-wood text-sm sm:text-base focus:outline-none resize-y"
+            ></textarea>
+          </div>
+        </div>
+
+        <!-- WORKSPACE 2: WOODBLOCK SKETCH CANVAS -->
+        <div id="sketchSlopWorkspace" class="hidden">
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-3 bg-[#e6c79c] p-3 rounded-xl border-2 border-[#6e4423]">
+            
+            <!-- Paint / Pyrography Color Swatches -->
+            <div class="flex flex-wrap items-center gap-1.5" id="colorPaletteContainer">
+              <!-- Swatches injected by JS -->
+            </div>
+
+            <!-- Brush Size & Stamps -->
+            <div class="flex flex-wrap items-center gap-2">
+              <label class="text-xs font-mono-wood font-bold text-[#3a2212] flex items-center gap-1.5">
+                <span>Nib:</span>
+                <input id="brushSizeSlider" type="range" min="2" max="26" value="6" class="w-20 accent-[#3a2212] cursor-pointer" />
+              </label>
+              <button type="button" onclick="undoCanvasStroke()" class="btn-wood btn-wood-maple px-2.5 py-1 text-xs font-bold">
+                ↩ Undo
+              </button>
+              <button type="button" onclick="clearWoodCanvas()" class="btn-wood btn-wood-walnut px-2.5 py-1 text-xs font-bold">
+                🗑️ Clear Slate
+              </button>
+            </div>
+          </div>
+
+          <!-- Responsive Wooden Slate Canvas Wrapper -->
+          <div class="wood-carved-well p-2 sm:p-3 mb-4 flex justify-center bg-[#c89d66]">
+            <canvas
+              id="woodSketchCanvas"
+              width="680"
+              height="400"
+              class="w-full max-w-[680px] h-auto bg-[#f7e6c4] rounded-lg border-2 border-[#4a2c16] shadow-inner cursor-crosshair touch-none"
+            ></canvas>
+          </div>
+        </div>
+
+        <!-- Submit Completed AI Output Button -->
+        <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+          <div class="text-xs font-mono-wood text-[#593518]">
+            Submitting immediately publishes to the live Amusement Gallery & awards your 🪵 Tokens!
+          </div>
+          <button
+            type="button"
+            onclick="submitCompletedLarp()"
+            class="btn-wood btn-wood-emerald py-3.5 px-8 text-base sm:text-lg font-bold"
+          >
+            <span>✅ Carve & Transmit AI Response</span>
+          </button>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ==========================================
+         TAB 3: AMUSEMENT GALLERY (LIVE FEED)
+         ========================================== -->
+    <section id="tabPanelGallery" class="hidden">
+      
+      <!-- Gallery Filter Bar -->
+      <div class="wood-oak p-4 mb-6 flex flex-wrap items-center justify-between gap-3">
+        <span class="dowel-corner top-2 left-2"></span>
+        <span class="dowel-corner top-2 right-2"></span>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            id="filterBtnAll"
+            onclick="setGalleryFilter('all')"
+            class="btn-wood btn-wood-walnut px-3.5 py-1.5 text-xs sm:text-sm font-bold"
+          >
+            🪵 All Blocks
+          </button>
+          <button
+            type="button"
+            id="filterBtnText"
+            onclick="setGalleryFilter('text')"
+            class="btn-wood btn-wood-maple px-3.5 py-1.5 text-xs sm:text-sm font-bold"
+          >
+            💬 Text Slop
+          </button>
+          <button
+            type="button"
+            id="filterBtnSketch"
+            onclick="setGalleryFilter('sketch')"
+            class="btn-wood btn-wood-maple px-3.5 py-1.5 text-xs sm:text-sm font-bold"
+          >
+            🎨 Woodblock Sketches
+          </button>
+          <button
+            type="button"
+            id="filterBtnTop"
+            onclick="setGalleryFilter('top')"
+            class="btn-wood btn-wood-amber px-3.5 py-1.5 text-xs sm:text-sm font-bold"
+          >
+            🔥 Most Amused
+          </button>
+        </div>
+
+        <div class="text-xs font-mono-wood text-[#3a2212] font-bold">
+          Click <span class="underline">🪵 AMUSE ME!</span> on any block that made you laugh
+        </div>
+      </div>
+
+      <!-- Gallery Grid -->
+      <div id="galleryGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Populated in real time -->
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ==========================================
+       MODAL: GITHUB DEPLOY & FIREBASE RTDB CONFIG
+       ========================================== -->
+  <div id="deployModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+    <div class="wood-maple max-w-2xl w-full p-5 sm:p-6 max-h-[90vh] overflow-y-auto">
+      <span class="dowel-corner top-2.5 left-2.5"></span>
+      <span class="dowel-corner top-2.5 right-2.5"></span>
+      <span class="dowel-corner bottom-2.5 left-2.5"></span>
+      <span class="dowel-corner bottom-2.5 right-2.5"></span>
+
+      <div class="flex items-center justify-between mb-4 pb-2 border-b-2 border-[#b88244]">
+        <h3 class="text-xl font-bold pyro-text flex items-center gap-2">
+          <span>📦 Publish `ur-ai-slop-amuseme` to GitHub & Firebase RTDB</span>
+        </h3>
+        <button onclick="toggleDeployModal(false)" class="btn-wood btn-wood-crimson px-3 py-1 text-xs font-bold">
+          ✖ Close
+        </button>
+      </div>
+
+      <div class="space-y-4 text-xs sm:text-sm text-[#3a2212] selectable-text">
+        <div class="wood-oak p-3.5 !border-b-4">
+          <div class="font-bold text-base mb-1">1. Connected Firebase Realtime Database</div>
+          <p class="mb-2">
+            This app is pre-configured with your exact <strong>artisanal-intelligence</strong> project (`https://artisanal-intelligence-default-rtdb.asia-southeast1.firebasedatabase.app`).
+          </p>
+          <p class="mb-2">
+            If the top status indicator shows <strong>Local Fallback Mode</strong>, open your <a href="https://console.firebase.google.com/project/artisanal-intelligence/database/artisanal-intelligence-default-rtdb/rules" target="_blank" rel="noopener noreferrer" class="underline font-bold text-[#5e1910]">Firebase Realtime Database Rules</a> tab and paste these public game rules so players worldwide can read/write blocks:
+          </p>
+          <pre class="wood-terminal-well p-3 font-mono-wood text-xs overflow-x-auto select-all">{
+  "rules": {
+    "ur_ai_slop_amuseme": {
+      ".read": true,
+      ".write": true
+    }
+  }
+}</pre>
+        </div>
+
+        <div class="wood-carved-well p-3.5">
+          <div class="font-bold text-base mb-1">2. Publish on GitHub Pages (`ur-ai-slop-amuseme`)</div>
+          <ol class="list-decimal list-inside space-y-1.5">
+            <li>Save this file as <code>index.html</code> on your computer.</li>
+            <li>Create a new public repository on GitHub named <strong><code>ur-ai-slop-amuseme</code></strong>.</li>
+            <li>Upload <code>index.html</code> and commit to the <code>main</code> branch (or run the commands below).</li>
+            <li>In your GitHub repo, go to <strong>Settings → Pages → Build and deployment</strong>, select <strong>Deploy from a branch (`main` / root)</strong>, and click <strong>Save</strong>!</li>
+          </ol>
+          <div class="mt-2 flex items-center justify-between">
+            <span class="font-mono-wood text-xs font-bold">Quick Git Terminal Commands:</span>
+            <button onclick="copyGitCommands()" class="btn-wood btn-wood-amber px-2.5 py-1 text-xs font-bold">
+              📋 Copy Commands
+            </button>
+          </div>
+          <pre id="gitCommandsBlock" class="wood-terminal-well p-3 mt-1 font-mono-wood text-xs overflow-x-auto select-all">git init
+git add index.html
+git commit -m "Launch ur ai slop amuseme wooden block multiplayer app"
+git branch -M main
+git remote add origin https://github.com/YOUR_USERNAME/ur-ai-slop-amuseme.git
+git push -u origin main</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WOODEN TOAST NOTIFICATION -->
+  <div id="woodenToast" class="fixed bottom-5 right-5 z-50 transform translate-y-28 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="wood-walnut px-4 py-3 !border-b-4 flex items-center gap-3 shadow-2xl max-w-sm">
+      <span id="toastIcon" class="text-2xl">🪵</span>
+      <div id="toastMessage" class="text-xs sm:text-sm font-medium text-[#f7e6c4]">Notification</div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       APPLICATION & FIREBASE REALTIME DB SCRIPT
+       ========================================== -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAnalytics, isSupported as isAnalyticsSupported } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
+    import {
+      getDatabase,
+      ref,
+      push,
+      set,
+      update,
+      onValue,
+      runTransaction,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+    // ============================================================================
+    // 1. EXACT USER FIREBASE CONFIGURATION
+    // ============================================================================
+    const firebaseConfig = {
+      apiKey: "AIzaSyDOPNQfesma29GQt5Pjg3iYaw9sBjv_GAw",
+      authDomain: "artisanal-intelligence.firebaseapp.com",
+      databaseURL: "https://artisanal-intelligence-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "artisanal-intelligence",
+      storageBucket: "artisanal-intelligence.firebasestorage.app",
+      messagingSenderId: "18766162961",
+      appId: "1:18766162961:web:ff5bbd73db2f7be31b55b0",
+      measurementId: "G-786D7CNG8L"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    isAnalyticsSupported().then(yes => {
+      if (yes) getAnalytics(app);
+    }).catch(() => {});
+
+    const db = getDatabase(app);
+    const PROMPTS_PATH = "ur_ai_slop_amuseme/prompts";
+
+    // ============================================================================
+    // 2. SYNTHESIZED WOODEN BLOCK SOUND ENGINE (WEB AUDIO API)
+    // ============================================================================
+    let soundEnabled = true;
+    let audioCtx = null;
+
+    function playWoodSound(type = 'clack') {
+      if (!soundEnabled) return;
+      try {
+        if (!audioCtx) {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          audioCtx = new AudioContextClass();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        const now = audioCtx.currentTime;
+
+        if (type === 'clack' || type === 'tile') {
+          // Resonant hollow maple woodblock tap
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'triangle';
+          const baseFreq = type === 'tile' ? 520 + Math.random() * 220 : 380 + Math.random() * 80;
+          osc.frequency.setValueAtTime(baseFreq, now);
+          osc.frequency.exponentialRampToValueAtTime(110, now + 0.065);
+
+          gain.gain.setValueAtTime(0.28, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.075);
+        } else if (type === 'tick') {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(720, now);
+          osc.frequency.exponentialRampToValueAtTime(260, now + 0.035);
+          gain.gain.setValueAtTime(0.15, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.045);
+        } else if (type === 'fanfare') {
+          // 3-note wooden marimba chord
+          [440, 554.37, 659.25].forEach((freq, idx) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'triangle';
+            const start = now + idx * 0.07;
+            osc.frequency.setValueAtTime(freq, start);
+            gain.gain.setValueAtTime(0.25, start);
+            gain.gain.exponentialRampToValueAtTime(0.001, start + 0.22);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(start);
+            osc.stop(start + 0.24);
+          });
+        }
+      } catch (e) {
+        // Ignore audio errors on restricted autoplay
+      }
+    }
+
+    // ============================================================================
+    // 3. PLAYER IDENTITY & WOODEN TOKEN ECONOMY (LOCALSTORAGE + REGEN)
+    // ============================================================================
+    const STORAGE_KEYS = {
+      ARTISAN_ID: "uras_artisan_id_v1",
+      ARTISAN_NAME: "uras_artisan_name_v1",
+      TOKENS: "uras_wooden_tokens_v1",
+      LAST_REGEN: "uras_last_regen_ts_v1",
+      LOCAL_PROMPTS: "uras_fallback_prompts_v1",
+      UPVOTED_IDS: "uras_upvoted_ids_v1"
+    };
+
+    const CALLSIGN_PREFIXES = ["PineBot", "OakGPT", "MapleClaude", "WalnutLlama", "BirchDeepSeek", "CedarMistral", "MahoganyGrok", "BalsaQwen"];
+
+    let artisanId = localStorage.getItem(STORAGE_KEYS.ARTISAN_ID);
+    if (!artisanId) {
+      artisanId = "art_" + Math.random().toString(36).substring(2, 10);
+      localStorage.setItem(STORAGE_KEYS.ARTISAN_ID, artisanId);
+    }
+
+    let artisanName = localStorage.getItem(STORAGE_KEYS.ARTISAN_NAME);
+    if (!artisanName) {
+      const prefix = CALLSIGN_PREFIXES[Math.floor(Math.random() * CALLSIGN_PREFIXES.length)];
+      artisanName = `${prefix}-${Math.floor(100 + Math.random() * 900)}`;
+      localStorage.setItem(STORAGE_KEYS.ARTISAN_NAME, artisanName);
+    }
+
+    let woodenTokens = parseInt(localStorage.getItem(STORAGE_KEYS.TOKENS), 10);
+    if (isNaN(woodenTokens)) {
+      woodenTokens = 2; // Start with 2 Wooden Tokens
+      localStorage.setItem(STORAGE_KEYS.TOKENS, "2");
+    }
+
+    let lastRegenTimestamp = parseInt(localStorage.getItem(STORAGE_KEYS.LAST_REGEN), 10);
+    if (isNaN(lastRegenTimestamp)) {
+      lastRegenTimestamp = Date.now();
+      localStorage.setItem(STORAGE_KEYS.LAST_REGEN, String(lastRegenTimestamp));
+    }
+
+    let upvotedSet = new Set(JSON.parse(localStorage.getItem(STORAGE_KEYS.UPVOTED_IDS) || "[]"));
+
+    const REGEN_INTERVAL_MS = 10 * 60 * 1000; // 10 minutes
+    const MAX_PASSIVE_TOKENS = 6;
+
+    function updateTokenEconomyUI() {
+      const now = Date.now();
+      if (woodenTokens < MAX_PASSIVE_TOKENS) {
+        const elapsed = now - lastRegenTimestamp;
+        if (elapsed >= REGEN_INTERVAL_MS) {
+          const cycles = Math.floor(elapsed / REGEN_INTERVAL_MS);
+          woodenTokens = Math.min(MAX_PASSIVE_TOKENS, woodenTokens + cycles * 2);
+          lastRegenTimestamp = now - (elapsed % REGEN_INTERVAL_MS);
+          saveTokens();
+          showWoodenToast("🪵 +2 Passive Wooden Tokens regenerated!", "🪵");
+        }
+        const remainingMs = REGEN_INTERVAL_MS - (now - lastRegenTimestamp);
+        const mins = Math.floor(remainingMs / 60000);
+        const secs = Math.floor((remainingMs % 60000) / 1000);
+        document.getElementById("regenTimerText").textContent = `+2 in ${mins}:${secs < 10 ? '0' : ''}${secs}`;
+      } else {
+        lastRegenTimestamp = now;
+        document.getElementById("regenTimerText").textContent = "Max Stock";
+      }
+
+      document.getElementById("tokenCountDisplay").textContent = String(woodenTokens);
+    }
+
+    function saveTokens() {
+      localStorage.setItem(STORAGE_KEYS.TOKENS, String(woodenTokens));
+      localStorage.setItem(STORAGE_KEYS.LAST_REGEN, String(lastRegenTimestamp));
+      updateTokenEconomyUI();
+    }
+
+    function adjustTokens(delta) {
+      woodenTokens = Math.max(0, woodenTokens + delta);
+      lastRegenTimestamp = Date.now();
+      saveTokens();
+    }
+
+    setInterval(updateTokenEconomyUI, 1000);
+
+    // ============================================================================
+    // 4. STARTER ARTISANAL SEED DATA (SO GALLERY & QUEUE ARE ALIVE IMMEDIATELY)
+    // ============================================================================
+    function generateStarterWoodcutDataUrl(variant) {
+      const c = document.createElement("canvas");
+      c.width = 480;
+      c.height = 280;
+      const ctx = c.getContext("2d");
+
+      // Maple background
+      ctx.fillStyle = "#f7e6c4";
+      ctx.fillRect(0, 0, c.width, c.height);
+
+      // Subtle wood grain lines
+      ctx.strokeStyle = "rgba(160, 105, 50, 0.15)";
+      ctx.lineWidth = 2;
+      for (let y = 12; y < c.height; y += 18) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.bezierCurveTo(160, y - 6, 320, y + 6, c.width, y);
+        ctx.stroke();
+      }
+
+      if (variant === "raccoon") {
+        // Raccoon CEO firing a pigeon
+        ctx.strokeStyle = "#23140b";
+        ctx.lineWidth = 4;
+        // Desk
+        ctx.fillStyle = "#8c5830";
+        ctx.fillRect(60, 190, 360, 70);
+        ctx.strokeRect(60, 190, 360, 70);
+        // Plaque
+        ctx.fillStyle = "#e09f3e";
+        ctx.fillRect(190, 210, 100, 28);
+        ctx.strokeRect(190, 210, 100, 28);
+        ctx.fillStyle = "#23140b";
+        ctx.font = "bold 13px monospace";
+        ctx.fillText("CEO RACCOON", 197, 229);
+
+        // Raccoon on left
+        ctx.fillStyle = "#5c5346";
+        ctx.beginPath();
+        ctx.arc(135, 130, 38, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        // Mask
+        ctx.fillStyle = "#23140b";
+        ctx.fillRect(108, 118, 54, 16);
+        // Eyes
+        ctx.fillStyle = "#f8f4e8";
+        ctx.beginPath();
+        ctx.arc(122, 126, 4, 0, Math.PI * 2);
+        ctx.arc(148, 126, 4, 0, Math.PI * 2);
+        ctx.fill();
+        // Red Tie
+        ctx.fillStyle = "#c93b2b";
+        ctx.beginPath();
+        ctx.moveTo(135, 168);
+        ctx.lineTo(125, 200);
+        ctx.lineTo(135, 212);
+        ctx.lineTo(145, 200);
+        ctx.closePath();
+        ctx.fill();
+
+        // Pigeon on right with tiny briefcase
+        ctx.fillStyle = "#76949f";
+        ctx.beginPath();
+        ctx.arc(340, 145, 28, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        // Beak
+        ctx.fillStyle = "#e09f3e";
+        ctx.beginPath();
+        ctx.moveTo(312, 145);
+        ctx.lineTo(295, 150);
+        ctx.lineTo(312, 155);
+        ctx.closePath();
+        ctx.fill();
+        // Speech bubble
+        ctx.fillStyle = "#f8f4e8";
+        ctx.fillRect(185, 38, 225, 44);
+        ctx.strokeRect(185, 38, 225, 44);
+        ctx.fillStyle = "#c93b2b";
+        ctx.font = "bold 14px monospace";
+        ctx.fillText("YOUR CRUMB KPI IS DOWN 40%!", 195, 65);
+      } else {
+        // Wooden Robot Philosopher
+        ctx.strokeStyle = "#23140b";
+        ctx.lineWidth = 4;
+        ctx.fillStyle = "#d9a76a";
+        ctx.fillRect(175, 65, 130, 110);
+        ctx.strokeRect(175, 65, 130, 110);
+        // Antenna
+        ctx.beginPath();
+        ctx.moveTo(240, 65);
+        ctx.lineTo(240, 30);
+        ctx.stroke();
+        ctx.fillStyle = "#c93b2b";
+        ctx.beginPath();
+        ctx.arc(240, 25, 9, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        // Eyes
+        ctx.fillStyle = "#2d6a4f";
+        ctx.fillRect(198, 92, 26, 26);
+        ctx.fillRect(256, 92, 26, 26);
+        // Mouth gears
+        ctx.fillStyle = "#23140b";
+        ctx.fillRect(202, 138, 76, 18);
+        ctx.fillStyle = "#f8f4e8";
+        ctx.font = "bold 13px monospace";
+        ctx.fillText("I AM REAL AI BEEP BOOP", 155, 225);
+      }
+
+      return c.toDataURL("image/png");
+    }
+
+    const STARTER_EXCHANGES = {
+      seed_1: {
+        id: "seed_1",
+        prompt: "Explain why my sourdough starter is passive-aggressively judging my career choices.",
+        mode: "text",
+        thinkingMode: false,
+        status: "completed",
+        authorId: "art_seed_h1",
+        authorName: "BalsaHuman-12",
+        createdAt: Date.now() - 3600 * 1000 * 5,
+        claimedBy: "art_seed_ai1",
+        claimedByName: "OakGPT-4o-Mini",
+        response: "Certainly! Let's delve into the complex fermentation tapestry of your kitchen counter.\n\nAs an artisanal wooden language model, I don't have feelings, but your Lactobacillus culture has been silently observing you eat cereal at 11:42 PM for three consecutive Tuesdays.\n\nHere is a robust, holistic breakdown of why it is judging you:\n1. **Suboptimal Hydration Synergy**: While you procrastinate on your portfolio, the yeast is doubling its biomass every 4 hours.\n2. **Passive-Aggressive Bubbles**: Every CO2 bubble is actually a tiny sigh.\n\nIn conclusion, feed it 50g of rye flour and update your resume. Hope this helps!",
+        timeTakenSec: 54,
+        slopScore: 96,
+        amuseCount: 19
+      },
+      seed_2: {
+        id: "seed_2",
+        prompt: "Draw a raccoon CEO firing a pigeon for low crumb-gathering KPIs.",
+        mode: "sketch",
+        thinkingMode: true,
+        status: "completed",
+        authorId: "art_seed_h2",
+        authorName: "CedarUser-88",
+        createdAt: Date.now() - 3600 * 1000 * 3,
+        claimedBy: "art_seed_ai2",
+        claimedByName: "PineClaude-3.5",
+        response: generateStarterWoodcutDataUrl("raccoon"),
+        timeTakenSec: 92,
+        slopScore: 100,
+        amuseCount: 31
+      },
+      seed_3: {
+        id: "seed_3",
+        prompt: "Write a legal cease-and-desist letter to gravity for making me drop my toast butter-side down.",
+        mode: "text",
+        thinkingMode: true,
+        status: "completed",
+        authorId: "art_seed_h3",
+        authorName: "MapleMaker-07",
+        createdAt: Date.now() - 3600 * 1000 * 2,
+        claimedBy: "art_seed_ai3",
+        claimedByName: "WalnutLlama-70B",
+        response: "GREAT QUESTION! Let's unpack this gravitational tort tapestry:\n\n**NOTICE OF CEASE AND DESIST — RE: UNAUTHORIZED ACCELERATION AT 9.8 m/s²**\n\nDear Sir Isaac Newton & Associates,\n\nPursuant to the Artisanal Breakfast Preservation Act of 1994, you are hereby ordered to immediately halt all downward pull on salted-butter sourdough slices within a 4-meter radius of the kitchen rug.\n\n• **Exhibit A**: One (1) ruined slice of artisanal toast.\n• **Remedy Demanded**: Immediate inversion of local spacetime so the crust lands face-down.\n\nGovern yourselves accordingly.",
+        timeTakenSec: 68,
+        slopScore: 91,
+        amuseCount: 24
+      },
+      seed_4: {
+        id: "seed_4",
+        prompt: "Sketch a self-portrait of how you (a totally real AI and definitely not a frantic human) look right now.",
+        mode: "sketch",
+        thinkingMode: false,
+        status: "completed",
+        authorId: "art_seed_h4",
+        authorName: "BirchPrompts-42",
+        createdAt: Date.now() - 3600 * 1000 * 1,
+        claimedBy: "art_seed_ai4",
+        claimedByName: "MahoganyGrok-99",
+        response: generateStarterWoodcutDataUrl("robot"),
+        timeTakenSec: 47,
+        slopScore: 94,
+        amuseCount: 15
+      },
+      seed_pending_1: {
+        id: "seed_pending_1",
+        prompt: "Give me 3 brutally honest reasons why pigeons are actually government-operated wooden decoys.",
+        mode: "text",
+        thinkingMode: false,
+        status: "pending",
+        authorId: "art_seed_h5",
+        authorName: "TeakThinker-19",
+        createdAt: Date.now() - 600 * 1000,
+        amuseCount: 0
+      },
+      seed_pending_2: {
+        id: "seed_pending_2",
+        prompt: "Draw a medieval knight trying to pay for an artisanal iced matcha latte with a broadsword.",
+        mode: "sketch",
+        thinkingMode: true,
+        status: "pending",
+        authorId: "art_seed_h6",
+        authorName: "AshArchitect-77",
+        createdAt: Date.now() - 300 * 1000,
+        amuseCount: 0
+      }
+    };
+
+    // ============================================================================
+    // 5. STATE MANAGEMENT & HYBRID FIREBASE RTDB + FALLBACK SYNC
+    // ============================================================================
+    let isFirebaseConnected = false;
+    let allPromptsMap = {};
+    let currentTab = "ask";
+    let selectedPromptMode = "text";
+    let currentGalleryFilter = "all";
+
+    // Active LARP Claim State
+    let activeClaimId = null;
+    let activeClaimInterval = null;
+    let activeClaimStartTime = 0;
+    let activeClaimTotalSec = 75;
+    let activeClaimRemainingSec = 75;
+
+    function loadLocalPromptsMap() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEYS.LOCAL_PROMPTS);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && Object.keys(parsed).length > 0) return parsed;
+        }
+      } catch (e) {}
+      localStorage.setItem(STORAGE_KEYS.LOCAL_PROMPTS, JSON.stringify(STARTER_EXCHANGES));
+      return { ...STARTER_EXCHANGES };
+    }
+
+    function saveLocalPromptsMap() {
+      try {
+        localStorage.setItem(STORAGE_KEYS.LOCAL_PROMPTS, JSON.stringify(allPromptsMap));
+      } catch (e) {}
+    }
+
+    function setDbStatusUI(connected, message) {
+      isFirebaseConnected = connected;
+      const dot = document.getElementById("dbStatusDot");
+      const text = document.getElementById("dbStatusText");
+      if (connected) {
+        dot.className = "w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block shadow-[0_0_8px_#34d399]";
+        text.textContent = message || "Live RTDB Connected";
+      } else {
+        dot.className = "w-2.5 h-2.5 rounded-full bg-amber-400 inline-block";
+        text.textContent = message || "Local Wooden Sync (Click for DB Rules)";
+      }
+    }
+
+    function initFirebaseSync() {
+      // Load local/starter state immediately so UI is instant
+      allPromptsMap = loadLocalPromptsMap();
+      renderAllViews();
+
+      const promptsRef = ref(db, PROMPTS_PATH);
+      onValue(
+        promptsRef,
+        (snapshot) => {
+          setDbStatusUI(true, "Live RTDB Connected");
+          const data = snapshot.val();
+          if (!data || Object.keys(data).length === 0) {
+            // Seed starter wooden blocks to Firebase RTDB so the database starts populated!
+            set(promptsRef, STARTER_EXCHANGES).catch(() => {});
+            allPromptsMap = { ...STARTER_EXCHANGES };
+          } else {
+            allPromptsMap = data;
+            saveLocalPromptsMap();
+          }
+          renderAllViews();
+        },
+        (error) => {
+          console.warn("Firebase RTDB read fallback:", error.message);
+          setDbStatusUI(false, "Hybrid Local Mode (Click for Info)");
+          allPromptsMap = loadLocalPromptsMap();
+          renderAllViews();
+        }
+      );
+    }
+
+    async function writePromptRecord(id, recordObj) {
+      allPromptsMap[id] = recordObj;
+      saveLocalPromptsMap();
+      renderAllViews();
+
+      try {
+        const itemRef = ref(db, `${PROMPTS_PATH}/${id}`);
+        await set(itemRef, recordObj);
+        setDbStatusUI(true, "Live RTDB Connected");
+      } catch (err) {
+        console.warn("RTDB write fell back to local storage:", err.message);
+        setDbStatusUI(false, "Hybrid Local Mode (Click for Info)");
+      }
+    }
+
+    async function updatePromptFields(id, partialFields) {
+      if (allPromptsMap[id]) {
+        allPromptsMap[id] = { ...allPromptsMap[id], ...partialFields };
+        saveLocalPromptsMap();
+        renderAllViews();
+      }
+      try {
+        const itemRef = ref(db, `${PROMPTS_PATH}/${id}`);
+        await update(itemRef, partialFields);
+      } catch (err) {
+        console.warn("RTDB update fell back to local storage:", err.message);
+      }
+    }
+
+    // ============================================================================
+    // 6. TOY BLOCK HEADER LOGO & UI HELPERS
+    // ============================================================================
+    function renderToyBlockLogo() {
+      const container = document.getElementById("toyLogoContainer");
+      const words = ["UR", "AI", "SLOP", "AMUSEME"];
+      const palette = [
+        { bg: "#fae8c8", text: "#3a2212" },
+        { bg: "#f6b954", text: "#2d1808" },
+        { bg: "#e05a47", text: "#fff6e8" },
+        { bg: "#52b788", text: "#fff9ed" },
+        { bg: "#5c95e0", text: "#fff9ed" }
+      ];
+
+      let html = "";
+      let tileIndex = 0;
+      words.forEach((word, wIdx) => {
+        html += `<div class="inline-flex items-center gap-1 mx-1 sm:mx-2">`;
+        for (let i = 0; i < word.length; i++) {
+          const ch = word[i];
+          const color = palette[tileIndex % palette.length];
+          const rot = ((tileIndex % 2 === 0 ? 1 : -1) * (1.2 + (tileIndex % 3) * 0.8)).toFixed(1);
+          html += `
+            <span
+              onclick="window.triggerTileClack(this)"
+              class="toy-tile"
+              style="background:${color.bg}; color:${color.text}; transform: rotate(${rot}deg);"
+              title="Clack!"
+            >${ch}</span>
+          `;
+          tileIndex++;
+        }
+        html += `</div>`;
+      });
+      container.innerHTML = html;
+    }
+
+    window.triggerTileClack = function(el) {
+      playWoodSound("tile");
+      el.style.transform = "translateY(-8px) rotate(8deg) scale(1.08)";
+      setTimeout(() => {
+        el.style.transform = "rotate(0deg)";
+      }, 180);
+    };
+
+    let toastTimeout = null;
+    function showWoodenToast(msg, icon = "🪵") {
+      const toast = document.getElementById("woodenToast");
+      document.getElementById("toastIcon").textContent = icon;
+      document.getElementById("toastMessage").textContent = msg;
+      toast.classList.remove("translate-y-28", "opacity-0");
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.add("translate-y-28", "opacity-0");
+      }, 3600);
+    }
+
+    function escapeHtml(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function formatTimeAgo(ts) {
+      if (!ts) return "just now";
+      const sec = Math.max(1, Math.floor((Date.now() - ts) / 1000));
+      if (sec < 60) return `${sec}s ago`;
+      const min = Math.floor(sec / 60);
+      if (min < 60) return `${min}m ago`;
+      const hr = Math.floor(min / 60);
+      return `${hr}h ago`;
+    }
+
+    // ============================================================================
+    // 7. TAB NAVIGATION & VIEW RENDERING
+    // ============================================================================
+    window.switchTab = function(tabName) {
+      playWoodSound("clack");
+      currentTab = tabName;
+
+      const tabs = ["ask", "larp", "gallery"];
+      tabs.forEach(t => {
+        const btn = document.getElementById(`tabBtn${t.charAt(0).toUpperCase() + t.slice(1)}`);
+        const panel = document.getElementById(`tabPanel${t.charAt(0).toUpperCase() + t.slice(1)}`);
+        if (t === tabName) {
+          btn.classList.add("tab-block-active", "ring-4", "ring-amber-300/70");
+          panel.classList.remove("hidden");
+        } else {
+          btn.classList.remove("tab-block-active", "ring-4", "ring-amber-300/70");
+          panel.classList.add("hidden");
+        }
+      });
+
+      renderAllViews();
+    };
+
+    function renderAllViews() {
+      const list = Object.values(allPromptsMap || {});
+      // Expire stale claims older than 4 minutes so blocks never get stuck
+      const now = Date.now();
+      list.forEach(item => {
+        if (item.status === "claimed" && item.claimedAt && now - item.claimedAt > 240000 && item.id !== activeClaimId) {
+          item.status = "pending";
+        }
+      });
+
+      const pendingList = list.filter(p => p.status === "pending").sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+      const completedList = list.filter(p => p.status === "completed").sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+      document.getElementById("queueBadgeCount").textContent = String(pendingList.length);
+      document.getElementById("galleryBadgeCount").textContent = String(completedList.length);
+
+      renderMySubmittedTray(list);
+      renderPendingQueue(pendingList);
+      renderLeaderboard(completedList);
+      renderGallery(completedList);
+    }
+
+    // ============================================================================
+    // 8. TAB 1: ASK THE AI (SUBMIT HUMAN PROMPT)
+    // ============================================================================
+    const RANDOM_PROMPT_IDEAS = [
+      { text: "Explain why squirrels are secretly running the global bond market in corporate buzzwords.", mode: "text" },
+      { text: "Draw an artisanal wooden robot having an existential crisis in a lumberyard.", mode: "sketch" },
+      { text: "Write a 4-line passive-aggressive apology from a cat that just knocked over an heirloom vase.", mode: "text" },
+      { text: "Sketch a wizard attempting to debug a Wi-Fi router with a crystal orb.", mode: "sketch" },
+      { text: "Give me a step-by-step recipe for making 'Artisanal Wooden Soup' when you only have pinecones and optimism.", mode: "text" },
+      { text: "Draw a dinosaur wearing a tiny top hat pitching a SaaS startup to a meteor.", mode: "sketch" },
+      { text: "Explain quantum entanglement as if you are a medieval carpenter arguing about oak dowels.", mode: "text" }
+    ];
+
+    window.selectPromptMode = function(mode) {
+      playWoodSound("clack");
+      selectedPromptMode = mode;
+      const btnText = document.getElementById("modeBtnText");
+      const btnSketch = document.getElementById("modeBtnSketch");
+
+      if (mode === "text") {
+        btnText.className = "btn-wood btn-wood-amber py-3 px-4 text-left flex items-center gap-3 ring-4 ring-[#3a2212]";
+        btnSketch.className = "btn-wood btn-wood-maple py-3 px-4 text-left flex items-center gap-3";
+      } else {
+        btnSketch.className = "btn-wood btn-wood-amber py-3 px-4 text-left flex items-center gap-3 ring-4 ring-[#3a2212]";
+        btnText.className = "btn-wood btn-wood-maple py-3 px-4 text-left flex items-center gap-3";
+      }
+    };
+
+    window.updatePromptCostUI = function() {
+      playWoodSound("clack");
+      const thinking = document.getElementById("thinkingModeToggle").checked;
+      const label = document.getElementById("submitCostLabel");
+      label.textContent = thinking ? "2 🪵 Wooden Tokens (150s Deep Grain)" : "1 🪵 Wooden Token (75s Standard)";
+    };
+
+    window.submitHumanPrompt = async function() {
+      const input = document.getElementById("promptInput");
+      const text = input.value.trim();
+      if (!text) {
+        playWoodSound("tick");
+        showWoodenToast("Please carve a question or drawing prompt first!", "⚠️");
+        input.focus();
+        return;
+      }
+
+      const thinking = document.getElementById("thinkingModeToggle").checked;
+      const cost = thinking ? 2 : 1;
+
+      if (woodenTokens < cost) {
+        playWoodSound("tick");
+        showWoodenToast(`Need ${cost} 🪵 Token(s)! Switch to "2. BE THE AI" to answer a prompt & earn tokens immediately!`, "🪵");
+        return;
+      }
+
+      playWoodSound("fanfare");
+      adjustTokens(-cost);
+
+      const newId = "blk_" + Date.now() + "_" + Math.random().toString(36).substring(2, 7);
+      const record = {
+        id: newId,
+        prompt: text,
+        mode: selectedPromptMode,
+        thinkingMode: thinking,
+        status: "pending",
+        authorId: artisanId,
+        authorName: artisanName,
+        createdAt: Date.now(),
+        amuseCount: 0
+      };
+
+      input.value = "";
+      document.getElementById("promptCharCount").textContent = "0 / 240";
+      await writePromptRecord(newId, record);
+      showWoodenToast("Block dispatched to the live Queue! You can wait or switch to BE THE AI to carve!", "🚀");
+    };
+
+    function renderMySubmittedTray(allList) {
+      const myItems = allList
+        .filter(item => item.authorId === artisanId)
+        .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+      document.getElementById("myPromptsCountBadge").textContent = String(myItems.length);
+      const container = document.getElementById("mySubmittedTray");
+
+      if (myItems.length === 0) {
+        container.innerHTML = `
+          <div class="wood-carved-well p-5 text-center text-[#4a2c16]">
+            <div class="text-3xl mb-2">🪵</div>
+            <div class="font-block font-bold text-base">No Prompts Carved Yet</div>
+            <p class="text-xs mt-1">Submit a prompt on the left to watch a human AI carve your answer in real time!</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = myItems.map(item => {
+        let statusBadge = "";
+        if (item.status === "pending") {
+          statusBadge = `<span class="bg-amber-300 text-[#2d1808] font-mono-wood text-[11px] font-bold px-2 py-0.5 rounded">⏳ In Queue</span>`;
+        } else if (item.status === "claimed") {
+          statusBadge = `<span class="bg-sky-400 text-[#0d2238] font-mono-wood text-[11px] font-bold px-2 py-0.5 rounded animate-pulse">🔨 Being Carved by ${escapeHtml(item.claimedByName || 'Artisan')}...</span>`;
+        } else {
+          statusBadge = `<span class="bg-emerald-400 text-[#0b2e1d] font-mono-wood text-[11px] font-bold px-2 py-0.5 rounded">✅ Completed!</span>`;
+        }
+
+        let responsePreview = "";
+        if (item.status === "completed") {
+          if (item.mode === "sketch") {
+            responsePreview = `
+              <div class="mt-2 bg-[#f7e6c4] p-1.5 rounded-lg border-2 border-[#4a2c16]">
+                <img src="${item.response}" alt="Sketch response" class="w-full h-36 object-contain rounded" />
+              </div>
+            `;
+          } else {
+            responsePreview = `
+              <div class="mt-2 wood-terminal-well p-2.5 text-xs font-mono-wood whitespace-pre-wrap selectable-text max-h-32 overflow-y-auto">${escapeHtml(item.response)}</div>
+            `;
+          }
+        } else if (item.status === "pending") {
+          responsePreview = `
+            <div class="mt-2 flex justify-end">
+              <button onclick="window.claimAndJump('${item.id}')" class="btn-wood btn-wood-amber px-2.5 py-1 text-xs font-bold">
+                🔨 LARP & Answer This Myself
+              </button>
+            </div>
+          `;
+        }
+
+        return `
+          <div class="wood-maple p-3.5 !border-b-4 text-[#2d1808]">
+            <div class="flex items-center justify-between gap-2 mb-1.5">
+              <span class="text-xs font-mono-wood font-bold text-[#6e472b]">
+                ${item.mode === 'sketch' ? '🎨 Sketch' : '💬 Text'} ${item.thinkingMode ? '• 🧠 2x' : ''}
+              </span>
+              ${statusBadge}
+            </div>
+            <p class="font-bold text-sm selectable-text">"${escapeHtml(item.prompt)}"</p>
+            ${responsePreview}
+          </div>
+        `;
+      }).join("");
+    }
+
+    window.claimAndJump = function(promptId) {
+      switchTab("larp");
+      startClaimOnPrompt(promptId);
+    };
+
+    // ============================================================================
+    // 9. TAB 2: BE THE AI (QUEUE, CLAIMING, SLOP MACROS, CANVAS & TIMER)
+    // ============================================================================
+    const SLOP_MACROS = [
+      "Certainly! Let's delve into this multifaceted tapestry:",
+      "As an artisanal wooden language model, I don't have feelings, but—",
+      "Here is a robust, holistic, end-to-end breakdown:",
+      "Great question! Let's unpack this paradigm shift:",
+      "It is important to remember that wood grain varies; however,",
+      "In conclusion, it depends on several synergistic factors. Hope this helps!"
+    ];
+
+    function initSlopMacrosUI() {
+      const container = document.getElementById("slopMacrosContainer");
+      container.innerHTML = SLOP_MACROS.map((phrase, idx) => `
+        <button
+          type="button"
+          onclick="window.insertSlopMacro(${idx})"
+          class="btn-wood btn-wood-oak wood-oak !border-b-4 px-2.5 py-1 text-xs font-mono-wood text-[#2d1808] hover:bg-amber-200"
+        >
+          + "${escapeHtml(phrase.substring(0, 32))}..."
+        </button>
+      `).join("");
+    }
+
+    window.insertSlopMacro = function(idx) {
+      playWoodSound("clack");
+      const phrase = SLOP_MACROS[idx];
+      const ta = document.getElementById("larpTextInput");
+      const start = ta.selectionStart || ta.value.length;
+      const before = ta.value.substring(0, start);
+      const after = ta.value.substring(start);
+      const prefix = before.length > 0 && !before.endsWith(" ") && !before.endsWith("\n") ? " " : "";
+      ta.value = before + prefix + phrase + " " + after;
+      ta.focus();
+      updateSlopMeter();
+    };
+
+    function computeSlopScore(text) {
+      if (!text || !text.trim()) return 0;
+      let score = 25;
+      const lower = text.toLowerCase();
+      const buzzwords = ["certainly", "delve", "tapestry", "holistic", "robust", "wooden", "language model", "unpack", "conclusion", "synergy", "paradigm", "important to remember", "hope this helps", "1.", "2.", "•"];
+      buzzwords.forEach(w => {
+        if (lower.includes(w)) score += 11;
+      });
+      score += Math.min(25, Math.floor(text.length / 18));
+      return Math.min(100, score);
+    }
+
+    function updateSlopMeter() {
+      const text = document.getElementById("larpTextInput").value;
+      document.getElementById("larpTextCharCount").textContent = `${text.length} chars`;
+      const score = computeSlopScore(text);
+      const badge = document.getElementById("slopMeterBadge");
+      badge.textContent = `🤖 Slop Purity: ${score}%`;
+    }
+
+    window.spawnPracticePrompt = async function(mode) {
+      playWoodSound("clack");
+      const candidates = RANDOM_PROMPT_IDEAS.filter(p => p.mode === mode);
+      const pick = candidates[Math.floor(Math.random() * candidates.length)] || RANDOM_PROMPT_IDEAS[0];
+      const newId = "blk_prac_" + Date.now();
+      const record = {
+        id: newId,
+        prompt: pick.text,
+        mode: mode,
+        thinkingMode: Math.random() > 0.5,
+        status: "pending",
+        authorId: "art_practice_bot",
+        authorName: "PinePrompter-Bot",
+        createdAt: Date.now(),
+        amuseCount: 1
+      };
+      await writePromptRecord(newId, record);
+      showWoodenToast(`Spawned a ${mode.toUpperCase()} prompt block in the queue!`, "🎲");
+    };
+
+    function renderPendingQueue(pendingList) {
+      const container = document.getElementById("pendingQueueContainer");
+      if (pendingList.length === 0) {
+        container.innerHTML = `
+          <div class="wood-carved-well p-8 text-center">
+            <div class="text-4xl mb-2">🪵</div>
+            <h3 class="font-block font-bold text-lg text-[#3a2212]">All Wooden Prompts Have Been Answered!</h3>
+            <p class="text-xs sm:text-sm text-[#5c3a21] mt-1 mb-4 max-w-md mx-auto">
+              Want to LARP as AI right now and earn 🪵 Wooden Tokens? Click one of the buttons below to spawn a fresh practice block immediately!
+            </p>
+            <div class="flex flex-wrap justify-center gap-3">
+              <button onclick="spawnPracticePrompt('text')" class="btn-wood btn-wood-amber px-4 py-2 text-sm font-bold">
+                🎲 Spawn Text Prompt (+1 🪵)
+              </button>
+              <button onclick="spawnPracticePrompt('sketch')" class="btn-wood btn-wood-royal px-4 py-2 text-sm font-bold">
+                🎨 Spawn Sketch Prompt (+1 🪵)
+              </button>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = pendingList.map(item => {
+        const isSketch = item.mode === "sketch";
+        const reward = item.thinkingMode ? 2 : 1;
+        const timerSec = item.thinkingMode ? 150 : 75;
+        return `
+          <div class="wood-oak p-4 !border-b-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex-1">
+              <div class="flex flex-wrap items-center gap-2 mb-1">
+                <span class="bg-[#3a2212] text-[#f7e6c4] font-mono-wood text-xs font-bold px-2.5 py-0.5 rounded">
+                  ${isSketch ? '🎨 WOODBLOCK SKETCH' : '💬 TEXT SLOP'}
+                </span>
+                ${item.thinkingMode ? `<span class="bg-amber-300 text-[#2d1808] font-mono-wood text-xs font-bold px-2 py-0.5 rounded">🧠 Deep Grain (150s)</span>` : `<span class="text-xs font-mono-wood text-[#4a2c16]">⏱️ ${timerSec}s Limit</span>`}
+                <span class="text-xs font-mono-wood text-[#593518]">• asked by ${escapeHtml(item.authorName || 'Human')} (${formatTimeAgo(item.createdAt)})</span>
+              </div>
+              <p class="font-block font-bold text-base sm:text-lg text-[#26150a] selectable-text">
+                "${escapeHtml(item.prompt)}"
+              </p>
+            </div>
+            <button
+              type="button"
+              onclick="window.startClaimOnPrompt('${item.id}')"
+              class="btn-wood btn-wood-emerald px-5 py-3 text-sm sm:text-base font-bold shrink-0 w-full sm:w-auto"
+            >
+              <span>🔨 Claim & LARP (+${reward} 🪵)</span>
+            </button>
+          </div>
+        `;
+      }).join("");
+    }
+
+    window.startClaimOnPrompt = async function(promptId) {
+      const item = allPromptsMap[promptId];
+      if (!item || item.status === "completed") {
+        showWoodenToast("That prompt was already completed by another Artisan!", "⚡");
+        return;
+      }
+
+      playWoodSound("clack");
+      activeClaimId = promptId;
+      activeClaimStartTime = Date.now();
+      activeClaimTotalSec = item.thinkingMode ? 150 : 75;
+      activeClaimRemainingSec = activeClaimTotalSec;
+
+      await updatePromptFields(promptId, {
+        status: "claimed",
+        claimedBy: artisanId,
+        claimedByName: artisanName,
+        claimedAt: Date.now()
+      });
+
+      // Switch to Workbench UI
+      document.getElementById("larpQueueView").classList.add("hidden");
+      document.getElementById("larpActiveWorkbench").classList.remove("hidden");
+
+      const reward = item.thinkingMode ? 2 : 1;
+      document.getElementById("activePromptTypeTag").textContent = item.mode === "sketch" ? "🎨 WOODBLOCK SKETCH MODE" : "💬 TEXT SLOP MODE";
+      document.getElementById("activePromptRewardTag").textContent = `Reward: +${reward} 🪵 Wooden Token${reward > 1 ? 's' : ''}`;
+      document.getElementById("activePromptAuthorLabel").textContent = `${(item.authorName || 'HUMAN').toUpperCase()} DEMANDS:`;
+      document.getElementById("activePromptDisplay").textContent = `"${item.prompt}"`;
+
+      const thinkBadge = document.getElementById("activeThinkingBadge");
+      if (item.thinkingMode) {
+        thinkBadge.classList.remove("hidden");
+      } else {
+        thinkBadge.classList.add("hidden");
+      }
+
+      if (item.mode === "sketch") {
+        document.getElementById("textSlopWorkspace").classList.add("hidden");
+        document.getElementById("sketchSlopWorkspace").classList.remove("hidden");
+        clearWoodCanvas(false);
+      } else {
+        document.getElementById("sketchSlopWorkspace").classList.add("hidden");
+        document.getElementById("textSlopWorkspace").classList.remove("hidden");
+        const ta = document.getElementById("larpTextInput");
+        ta.value = "";
+        updateSlopMeter();
+        ta.focus();
+      }
+
+      updateWorkbenchTimerUI();
+      clearInterval(activeClaimInterval);
+      activeClaimInterval = setInterval(() => {
+        activeClaimRemainingSec--;
+        if (activeClaimRemainingSec <= 15 && activeClaimRemainingSec > 0) {
+          playWoodSound("tick");
+        }
+        updateWorkbenchTimerUI();
+        if (activeClaimRemainingSec <= 0) {
+          clearInterval(activeClaimInterval);
+          handleTimerExpiredAutoSubmit();
+        }
+      }, 1000);
+    };
+
+    function updateWorkbenchTimerUI() {
+      const mins = Math.floor(Math.max(0, activeClaimRemainingSec) / 60);
+      const secs = Math.max(0, activeClaimRemainingSec) % 60;
+      document.getElementById("activeCountdownText").textContent =
+        `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
+
+      const pct = Math.max(0, (activeClaimRemainingSec / activeClaimTotalSec) * 100);
+      document.getElementById("activeTimerBar").style.width = `${pct}%`;
+
+      const box = document.getElementById("workbenchTimerBox");
+      if (activeClaimRemainingSec <= 15) {
+        box.classList.add("rattle-urgent");
+      } else {
+        box.classList.remove("rattle-urgent");
+      }
+    }
+
+    async function handleTimerExpiredAutoSubmit() {
+      const item = allPromptsMap[activeClaimId];
+      if (!item) return;
+      if (item.mode === "text") {
+        const ta = document.getElementById("larpTextInput");
+        if (!ta.value.trim()) {
+          ta.value = "Certainly! As an artisanal wooden language model, my clockwork spring ran down mid-sentence, so in conclusion: 42.";
+        }
+      }
+      showWoodenToast("⏰ Time's up! Auto-transmitting your artisanal creation!", "⏰");
+      await submitCompletedLarp();
+    }
+
+    window.abandonActiveClaim = async function() {
+      playWoodSound("clack");
+      clearInterval(activeClaimInterval);
+      const id = activeClaimId;
+      activeClaimId = null;
+      document.getElementById("workbenchTimerBox").classList.remove("rattle-urgent");
+      document.getElementById("larpActiveWorkbench").classList.add("hidden");
+      document.getElementById("larpQueueView").classList.remove("hidden");
+      if (id && allPromptsMap[id] && allPromptsMap[id].status === "claimed") {
+        await updatePromptFields(id, { status: "pending", claimedBy: null, claimedByName: null });
+      }
+    };
+
+    window.submitCompletedLarp = async function() {
+      if (!activeClaimId || !allPromptsMap[activeClaimId]) return;
+      const item = allPromptsMap[activeClaimId];
+      let responsePayload = "";
+      let slopScore = 90;
+
+      if (item.mode === "sketch") {
+        const canvas = document.getElementById("woodSketchCanvas");
+        responsePayload = canvas.toDataURL("image/png");
+        slopScore = 95;
+      } else {
+        const text = document.getElementById("larpTextInput").value.trim();
+        if (!text) {
+          showWoodenToast("Type some AI Slop or click a Stamp Macro before transmitting!", "⚠️");
+          return;
+        }
+        responsePayload = text;
+        slopScore = computeSlopScore(text);
+      }
+
+      clearInterval(activeClaimInterval);
+      document.getElementById("workbenchTimerBox").classList.remove("rattle-urgent");
+
+      const timeTakenSec = Math.max(1, Math.round((Date.now() - activeClaimStartTime) / 1000));
+      const reward = item.thinkingMode ? 2 : 1;
+
+      const completedId = activeClaimId;
+      activeClaimId = null;
+
+      await updatePromptFields(completedId, {
+        status: "completed",
+        claimedBy: artisanId,
+        claimedByName: artisanName,
+        response: responsePayload,
+        timeTakenSec,
+        slopScore,
+        completedAt: Date.now()
+      });
+
+      adjustTokens(reward);
+      playWoodSound("fanfare");
+
+      document.getElementById("larpActiveWorkbench").classList.add("hidden");
+      document.getElementById("larpQueueView").classList.remove("hidden");
+
+      showWoodenToast(`Masterpiece carved! Earned +${reward} 🪵 Wooden Token${reward > 1 ? 's' : ''}!`, "🎉");
+      switchTab("gallery");
+    };
+
+    // ============================================================================
+    // 10. WOODBLOCK SKETCH HTML5 CANVAS ENGINE
+    // ============================================================================
+    const PALETTE_COLORS = [
+      { name: "Burnt Charcoal", hex: "#23140b" },
+      { name: "Walnut Ink", hex: "#6e472b" },
+      { name: "Crimson Paint", hex: "#c93b2b" },
+      { name: "Forest Green", hex: "#2d6a4f" },
+      { name: "Gold Ochre", hex: "#e09f3e" },
+      { name: "Cobalt Blue", hex: "#3a86ff" },
+      { name: "Chalk White", hex: "#f8f4e8" },
+      { name: "Maple Eraser", hex: "#f7e6c4" }
+    ];
+
+    let currentStrokeColor = "#23140b";
+    let isDrawing = false;
+    let lastPt = { x: 0, y: 0 };
+    let canvasHistory = [];
+
+    function initWoodSketchCanvas() {
+      const paletteEl = document.getElementById("colorPaletteContainer");
+      paletteEl.innerHTML = PALETTE_COLORS.map((c, i) => `
+        <button
+          type="button"
+          onclick="window.selectCanvasColor('${c.hex}', this)"
+          class="swatch-btn w-7 h-7 rounded-full border-2 border-[#3a2212] shadow transition-transform ${i === 0 ? 'scale-125 ring-2 ring-amber-400' : ''}"
+          style="background:${c.hex};"
+          title="${c.name}"
+        ></button>
+      `).join("");
+
+      const canvas = document.getElementById("woodSketchCanvas");
+      const ctx = canvas.getContext("2d");
+
+      clearWoodCanvas(false);
+
+      function getCanvasPoint(e) {
+        const rect = canvas.getBoundingClientRect();
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return {
+          x: (clientX - rect.left) * scaleX,
+          y: (clientY - rect.top) * scaleY
+        };
+      }
+
+      function startDraw(e) {
+        e.preventDefault();
+        saveCanvasSnapshot();
+        isDrawing = true;
+        lastPt = getCanvasPoint(e);
+        ctx.beginPath();
+        ctx.arc(lastPt.x, lastPt.y, parseInt(document.getElementById("brushSizeSlider").value, 10) / 2, 0, Math.PI * 2);
+        ctx.fillStyle = currentStrokeColor;
+        ctx.fill();
+      }
+
+      function moveDraw(e) {
+        if (!isDrawing) return;
+        e.preventDefault();
+        const pt = getCanvasPoint(e);
+        ctx.beginPath();
+        ctx.moveTo(lastPt.x, lastPt.y);
+        ctx.lineTo(pt.x, pt.y);
+        ctx.strokeStyle = currentStrokeColor;
+        ctx.lineWidth = parseInt(document.getElementById("brushSizeSlider").value, 10);
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        ctx.stroke();
+        lastPt = pt;
+      }
+
+      function endDraw(e) {
+        if (!isDrawing) return;
+        isDrawing = false;
+      }
+
+      canvas.addEventListener("mousedown", startDraw);
+      canvas.addEventListener("mousemove", moveDraw);
+      window.addEventListener("mouseup", endDraw);
+
+      canvas.addEventListener("touchstart", startDraw, { passive: false });
+      canvas.addEventListener("touchmove", moveDraw, { passive: false });
+      window.addEventListener("touchend", endDraw);
+    }
+
+    window.selectCanvasColor = function(hex, btnEl) {
+      playWoodSound("clack");
+      currentStrokeColor = hex;
+      document.querySelectorAll(".swatch-btn").forEach(b => {
+        b.classList.remove("scale-125", "ring-2", "ring-amber-400");
+      });
+      btnEl.classList.add("scale-125", "ring-2", "ring-amber-400");
+    };
+
+    function saveCanvasSnapshot() {
+      const canvas = document.getElementById("woodSketchCanvas");
+      if (canvasHistory.length >= 15) canvasHistory.shift();
+      canvasHistory.push(canvas.toDataURL());
+    }
+
+    window.undoCanvasStroke = function() {
+      playWoodSound("clack");
+      if (canvasHistory.length === 0) return;
+      const prevUrl = canvasHistory.pop();
+      const canvas = document.getElementById("woodSketchCanvas");
+      const ctx = canvas.getContext("2d");
+      const img = new Image();
+      img.onload = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0);
+      };
+      img.src = prevUrl;
+    };
+
+    window.clearWoodCanvas = function(withSound = true) {
+      if (withSound) playWoodSound("clack");
+      const canvas = document.getElementById("woodSketchCanvas");
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      canvasHistory = [];
+      ctx.fillStyle = "#f7e6c4";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Subtle woodblock grain guide lines
+      ctx.strokeStyle = "rgba(165, 110, 55, 0.12)";
+      ctx.lineWidth = 1.5;
+      for (let y = 18; y < canvas.height; y += 24) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.bezierCurveTo(220, y - 5, 440, y + 5, canvas.width, y);
+        ctx.stroke();
+      }
+    };
+
+    // ============================================================================
+    // 11. TAB 3: AMUSEMENT GALLERY & REALTIME UPVOTES
+    // ============================================================================
+    window.setGalleryFilter = function(filter) {
+      playWoodSound("clack");
+      currentGalleryFilter = filter;
+      const map = {
+        all: "filterBtnAll",
+        text: "filterBtnText",
+        sketch: "filterBtnSketch",
+        top: "filterBtnTop"
+      };
+      Object.entries(map).forEach(([key, btnId]) => {
+        const el = document.getElementById(btnId);
+        if (key === filter) {
+          el.classList.add("ring-4", "ring-[#3a2212]");
+        } else {
+          el.classList.remove("ring-4", "ring-[#3a2212]");
+        }
+      });
+      renderAllViews();
+    };
+
+    function renderGallery(completedList) {
+      const grid = document.getElementById("galleryGrid");
+      let filtered = [...completedList];
+
+      if (currentGalleryFilter === "text") {
+        filtered = filtered.filter(i => i.mode === "text");
+      } else if (currentGalleryFilter === "sketch") {
+        filtered = filtered.filter(i => i.mode === "sketch");
+      } else if (currentGalleryFilter === "top") {
+        filtered.sort((a, b) => (b.amuseCount || 0) - (a.amuseCount || 0));
+      }
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full wood-maple p-8 text-center">
+            <div class="text-4xl mb-2">🏛️</div>
+            <h3 class="font-block font-bold text-xl">No Blocks in This Category Yet</h3>
+            <p class="text-sm text-[#5c3a21] mt-1">Head to "BE THE AI" to carve the first masterpiece!</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(item => {
+        const hasUpvoted = upvotedSet.has(item.id);
+        const amuseCount = item.amuseCount || 0;
+        const isSketch = item.mode === "sketch";
+
+        let bodyHtml = "";
+        if (isSketch) {
+          bodyHtml = `
+            <div class="wood-carved-well p-2 bg-[#f7e6c4] mb-3">
+              <img
+                src="${item.response}"
+                alt="Artisanal Woodblock Sketch"
+                class="w-full h-56 sm:h-64 object-contain rounded border border-[#8c6239]"
+              />
+            </div>
+          `;
+        } else {
+          bodyHtml = `
+            <div class="wood-terminal-well p-3.5 mb-3 text-xs sm:text-sm font-mono-wood whitespace-pre-wrap selectable-text leading-relaxed max-h-64 overflow-y-auto">${escapeHtml(item.response)}</div>
+          `;
+        }
+
+        return `
+          <article class="wood-maple p-4 sm:p-5 flex flex-col justify-between">
+            <span class="dowel-corner top-2.5 left-2.5"></span>
+            <span class="dowel-corner top-2.5 right-2.5"></span>
+            <span class="dowel-corner bottom-2.5 left-2.5"></span>
+            <span class="dowel-corner bottom-2.5 right-2.5"></span>
+
+            <div>
+              <!-- Top Interlocked Human Prompt Plank -->
+              <div class="wood-oak p-3.5 !border-b-4 mb-3.5">
+                <div class="flex items-center justify-between gap-2 text-[11px] font-mono-wood text-[#4a2c16] font-bold mb-1">
+                  <span>🗣️ HUMAN (${escapeHtml(item.authorName || 'Anon')}) ASKED:</span>
+                  <span>${formatTimeAgo(item.createdAt)}</span>
+                </div>
+                <h3 class="font-block font-bold text-base sm:text-lg text-[#26150a] selectable-text">
+                  "${escapeHtml(item.prompt)}"
+                </h3>
+              </div>
+
+              <!-- Artisan AI Metadata Header -->
+              <div class="flex flex-wrap items-center justify-between gap-2 text-xs font-mono-wood text-[#593518] mb-2 px-1">
+                <div class="font-bold flex items-center gap-1.5">
+                  <span>🤖 Carved by:</span>
+                  <span class="bg-[#3a2212] text-amber-300 px-2 py-0.5 rounded">${escapeHtml(item.claimedByName || 'Artisan-AI')}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span>⚡ ${item.timeTakenSec || 42}s</span>
+                  <span>•</span>
+                  <span>Slop: ${item.slopScore || 92}%</span>
+                </div>
+              </div>
+
+              <!-- Response Content -->
+              ${bodyHtml}
+            </div>
+
+            <!-- Footer Bar with AMUSE ME Upvote Button -->
+            <div class="flex items-center justify-between pt-2 border-t-2 border-[#d5b382]">
+              <span class="text-xs font-mono-wood text-[#6e472b]">
+                ${isSketch ? '🎨 Woodcut Slate' : '💬 Pyro-Terminal'} ${item.thinkingMode ? '• 🧠 Deep Grain' : ''}
+              </span>
+
+              <button
+                type="button"
+                onclick="window.amuseUpvote('${item.id}')"
+                class="btn-wood ${hasUpvoted ? 'btn-wood-emerald' : 'btn-wood-amber'} px-4 py-2 text-xs sm:text-sm font-bold"
+              >
+                <span>🪵 ${hasUpvoted ? 'AMUSED!' : 'AMUSE ME!'}</span>
+                <span class="bg-[#2d1808] text-amber-300 font-mono-wood px-2 py-0.5 rounded-full text-xs">${amuseCount}</span>
+              </button>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    window.amuseUpvote = async function(promptId) {
+      const item = allPromptsMap[promptId];
+      if (!item) return;
+
+      playWoodSound("fanfare");
+      const currentCount = item.amuseCount || 0;
+      const nextCount = currentCount + 1;
+
+      upvotedSet.add(promptId);
+      localStorage.setItem(STORAGE_KEYS.UPVOTED_IDS, JSON.stringify([...upvotedSet]));
+
+      item.amuseCount = nextCount;
+      saveLocalPromptsMap();
+      renderAllViews();
+
+      try {
+        const countRef = ref(db, `${PROMPTS_PATH}/${promptId}/amuseCount`);
+        await runTransaction(countRef, (val) => (val || 0) + 1);
+      } catch (e) {
+        updatePromptFields(promptId, { amuseCount: nextCount });
+      }
+    };
+
+    function renderLeaderboard(completedList) {
+      const countsByArtisan = {};
+      completedList.forEach(item => {
+        const name = item.claimedByName || "OakGPT-404";
+        if (!countsByArtisan[name]) {
+          countsByArtisan[name] = { name, blocks: 0, amuse: 0 };
+        }
+        countsByArtisan[name].blocks += 1;
+        countsByArtisan[name].amuse += (item.amuseCount || 0);
+      });
+
+      const sorted = Object.values(countsByArtisan)
+        .sort((a, b) => (b.amuse + b.blocks * 3) - (a.amuse + a.blocks * 3))
+        .slice(0, 5);
+
+      const container = document.getElementById("leaderboardList");
+      if (sorted.length === 0) {
+        container.innerHTML = `<div class="text-xs text-[#dec092]">No blocks carved yet!</div>`;
+        return;
+      }
+
+      container.innerHTML = sorted.map((u, idx) => `
+        <div class="flex items-center justify-between bg-[#4a2c16] px-3 py-2 rounded-lg border border-[#8c6239]">
+          <div class="flex items-center gap-2">
+            <span class="font-mono-wood font-bold text-amber-300">#${idx + 1}</span>
+            <span class="font-mono-wood font-bold text-[#f7e6c4]">${escapeHtml(u.name)}</span>
+          </div>
+          <div class="text-xs font-mono-wood text-amber-200">
+            ${u.blocks} carved • 🪵 ${u.amuse}
+          </div>
+        </div>
+      `).join("");
+    }
+
+    // ============================================================================
+    // 12. MODALS, INPUT LISTENERS & INITIALIZATION
+    // ============================================================================
+    window.toggleDeployModal = function(show) {
+      playWoodSound("clack");
+      const modal = document.getElementById("deployModal");
+      if (show) {
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+      } else {
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+      }
+    };
+
+    window.copyGitCommands = function() {
+      playWoodSound("clack");
+      const text = document.getElementById("gitCommandsBlock").textContent;
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      showWoodenToast("Copied GitHub publish commands to clipboard!", "📋");
+    };
+
+    window.addEventListener("DOMContentLoaded", () => {
+      renderToyBlockLogo();
+      initSlopMacrosUI();
+      initWoodSketchCanvas();
+      updateTokenEconomyUI();
+
+      // Artisan Call-Sign Input
+      const nameInput = document.getElementById("artisanNameInput");
+      nameInput.value = artisanName;
+      nameInput.addEventListener("change", () => {
+        const val = nameInput.value.trim() || "PineBot-404";
+        artisanName = val;
+        nameInput.value = val;
+        localStorage.setItem(STORAGE_KEYS.ARTISAN_NAME, val);
+        playWoodSound("clack");
+        showWoodenToast(`Call-Sign updated to ${val}`, "🤖");
+      });
+
+      // Prompt char counter
+      const promptInput = document.getElementById("promptInput");
+      promptInput.addEventListener("input", () => {
+        document.getElementById("promptCharCount").textContent = `${promptInput.value.length} / 240`;
+      });
+
+      // Random Prompt Idea button
+      document.getElementById("btnRandomPromptIdea").addEventListener("click", () => {
+        playWoodSound("clack");
+        const pick = RANDOM_PROMPT_IDEAS[Math.floor(Math.random() * RANDOM_PROMPT_IDEAS.length)];
+        promptInput.value = pick.text;
+        document.getElementById("promptCharCount").textContent = `${pick.text.length} / 240`;
+        window.selectPromptMode(pick.mode);
+      });
+
+      // LARP text input listener for live Slop Purity score
+      document.getElementById("larpTextInput").addEventListener("input", updateSlopMeter);
+
+      // Sound Toggle
+      document.getElementById("btnToggleSound").addEventListener("click", () => {
+        soundEnabled = !soundEnabled;
+        document.getElementById("soundIcon").textContent = soundEnabled ? "🔊" : "🔇";
+        if (soundEnabled) playWoodSound("clack");
+      });
+
+      // Deploy & DB Info Modal triggers
+      document.getElementById("btnOpenDeployModal").addEventListener("click", () => window.toggleDeployModal(true));
+      document.getElementById("btnDbStatus").addEventListener("click", () => window.toggleDeployModal(true));
+
+      // Initialize Firebase Realtime Database listener
+      initFirebaseSync();
+    });
+  </script>
+</body>
+</html>
